@@ -9,13 +9,13 @@ public class BookTests
     [Test]
     public void BookCalculatesAnAverageGrade()
     {
-        var book = new Book("");
+        var book = new InMemoryBook("");
 
         book.AddGrade(89.1);
         book.AddGrade(90.5);
         book.AddGrade(77.3);
 
-        var result = book.GetStats();
+        var result = book.GetStatistics();
 
 
         Assert.That(result.Average, Is.EqualTo(85.6).Within(1));
@@ -28,7 +28,7 @@ public class BookTests
     [Test]
     public void BookPrintsErrorToConsole()
     {
-        var book = new Book("Ben");
+        var book = new InMemoryBook("Ben");
         var exception = Assert.Throws<ArgumentException>
             (
             () => book.AddGrade(105)

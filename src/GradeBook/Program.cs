@@ -8,14 +8,27 @@
 
             var bookName = Console.ReadLine();
             bookName ??= "Unkown";
-            var book = new Book(bookName);
+            IBook book = new DiskBook(bookName);
 
             book.GradeAdded += OnGradeAdded;
-            
+
 
             Console.WriteLine($"Please Add Grades to {book.Name}'s gradebook, enter q when finished.");
             string? input;
-            do 
+            input = EnterGrades(book);
+
+            var stats = book.GetStatistics();
+
+            Console.WriteLine($"The average grade is {stats.Average}");
+            Console.WriteLine($"The lowest grade is {stats.Low}");
+            Console.WriteLine($"The highest grade is {stats.High}");
+            Console.WriteLine($"The letter grade is {stats.Letter}");
+        }
+
+        private static string EnterGrades(IBook book)
+        {
+            string? input;
+            do
             {
                 input = Console.ReadLine();
                 if (input != "q")
@@ -35,16 +48,10 @@
                         Console.WriteLine(ex.Message);
                     }
                 }
-                
+
             }
-            while (input != "q");      
-
-            var stats = book.GetStats();
-
-            Console.WriteLine($"The average grade is {stats.Average}");
-            Console.WriteLine($"The lowest grade is {stats.Low}");
-            Console.WriteLine($"The highest grade is {stats.High}");
-            Console.WriteLine($"The letter grade is {stats.Letter}");
+            while (input != "q");
+            return input;
         }
 
         static void OnGradeAdded(object sender, EventArgs e)
